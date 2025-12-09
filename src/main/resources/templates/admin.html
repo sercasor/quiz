@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+</head>
+<body>
+<div th:object="${user}">
+    <h1>Admin Dashboard</h1>
+    <p>Bienvenido: <span th:text="*{username}"></span></p>
+
+    <h2>Panel de control de Quiz</h2>
+    <button type="button"></button>
+    <p>Tu rol es: <span th:text="*{role}"></span></p>
+    <p>Tu nombre es: <span th:text="*{firstName}"></span></p>
+    <p>Tu apellido es: <span th:text="*{lastName}"></span></p>
+    <p>Tu email es: <span th:text="*{email}"></span></p>
+    <p>Total turnover this month $3500000</p>
+    <p>Current stock worth $2500000</p>
+
+</div>
+
+<!--TODO: hacer un div con un foreach de thymeleaf que reciba yrecorra todos los quiz para mostrarlos al admin-->
+<div id="quizList">
+
+</div>
+
+<!--TODO averiguar si esto es suficiente. Según la docu(apartado "Understanding Logout’s Architecture") debería funcionar este endpoint de forma automatica y sin configuracion de CSFR-->
+<form  th:action="@{/logout}"  method="get">
+    <button>Logout</button>
+</form>
+
+
+
+</body>
+</html>
+

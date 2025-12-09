@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .registration-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .registration-container h2 {
+            margin-bottom: 20px;
+        }
+        .registration-container input, .registration-container select {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .registration-container button {
+            width: 80%;
+            padding: 10px;
+            background-color: #2d2db0;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .registration-container button:hover {
+            background-color: #2d2db0;
+        }
+
+		.error {
+            color: red;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <h2>Register</h2>
+        <form th:action="@{/register}" th:object="${user}" method="post" class="form-group">
+            <div>
+                <input th:field="*{username}" type="text" id="username"
+                       placeholder="Enter username" >
+                <p th:if="${#fields.hasErrors('username')}" style="color: red;"
+                   th:errors="*{username}">Error en username</p>
+            </div>
+
+            <!-- First name -->
+            <div>
+                <input th:field="*{firstName}" type="text" id="firstName"
+                       placeholder="Enter first name" >
+                <p th:if="${#fields.hasErrors('firstName')}" style="color: red;"
+                   th:errors="*{firstName}">Error en first name</p>
+            </div>
+
+            <!-- Last name -->
+            <div>
+                <input th:field="*{lastName}" type="text" id="lastName"
+                       placeholder="Enter last name" >
+                <p th:if="${#fields.hasErrors('lastName')}" style="color: red;"
+                   th:errors="*{lastName}">Error en last name</p>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <input th:field="*{email}" type="email" id="email"
+                       placeholder="Enter email" >
+                <p th:if="${#fields.hasErrors('email')}" style="color: red;"
+                   th:errors="*{email}">Error en email</p>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <input th:field="*{password}" type="password" id="password"
+                       placeholder="Enter password" >
+                <p th:if="${#fields.hasErrors('password')}" style="color: red;"
+                   th:errors="*{password}">Error en password</p>
+            </div>
+
+            <!-- Role -->
+            <div>
+                <select th:field="*{role}" id="role">
+                    <option value="" disabled selected>Select your role</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="STAFF">Staff</option>
+                </select>
+                <p th:if="${#fields.hasErrors('role')}" style="color: red;"
+                   th:errors="*{role}">Error en rol</p>
+            </div>
+                        
+            <!-- Submit Button -->
+            <button type="submit">Register</button>
+        </form>
+        <!-- Error Message -->
+		<div th:if="${param.error}" class="error">
+			Invalid username.
+		</div>
+		
+        <p>Already have an account? <a href="/login">Login here</a></p>
+    </div>
+</body>
+</html>
