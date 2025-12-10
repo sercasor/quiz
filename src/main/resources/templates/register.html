@@ -63,22 +63,6 @@
                    th:errors="*{username}">Error en username</p>
             </div>
 
-            <!-- First name -->
-            <div>
-                <input th:field="*{firstName}" type="text" id="firstName"
-                       placeholder="Enter first name" >
-                <p th:if="${#fields.hasErrors('firstName')}" style="color: red;"
-                   th:errors="*{firstName}">Error en first name</p>
-            </div>
-
-            <!-- Last name -->
-            <div>
-                <input th:field="*{lastName}" type="text" id="lastName"
-                       placeholder="Enter last name" >
-                <p th:if="${#fields.hasErrors('lastName')}" style="color: red;"
-                   th:errors="*{lastName}">Error en last name</p>
-            </div>
-
             <!-- Email -->
             <div>
                 <input th:field="*{email}" type="email" id="email"
@@ -100,7 +84,7 @@
                 <select th:field="*{role}" id="role">
                     <option value="" disabled selected>Select your role</option>
                     <option value="ADMIN">Admin</option>
-                    <option value="STAFF">Staff</option>
+                    <option value="USER">Usuario</option>
                 </select>
                 <p th:if="${#fields.hasErrors('role')}" style="color: red;"
                    th:errors="*{role}">Error en rol</p>
@@ -111,10 +95,10 @@
         </form>
         <!-- Error Message -->
 		<div th:if="${param.error}" class="error">
-			Invalid username.
+			 username inválido.
 		</div>
 		
-        <p>Already have an account? <a href="/login">Login here</a></p>
+        <p>¿Tienes una cuenta ya? <a href="/login">Login</a></p>
     </div>
 </body>
 </html>

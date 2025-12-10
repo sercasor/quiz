@@ -28,7 +28,7 @@ public class WebsiteController {
     }
 
     /*-------ENDPOINTS-----------*/
-    //este controller redirige al login o a register según el usuario esté logueado tras comprobarlo
+    //este controller redirige al login  según el usuario esté logueado tras comprobarlo
     @GetMapping("/home")
     public String homepage(Model model) {
 // Get the authenticated user's details
@@ -59,7 +59,7 @@ public class WebsiteController {
         if (role.equals("ROLE_ADMIN")) {
             return "admin"; // Return the admin.html template, it has the quiz options for admins
         } else {
-            return "viewer"; // Return the viewer.html template. for users to view and submit quiz answers right after logging in.
+            return "quiz"; // Return the quiz.html template. for users to view and submit quiz answers right after logging in.
         }
 
     }
@@ -155,7 +155,7 @@ public class WebsiteController {
     }
 
 
-    @PostMapping("/home")
+    @PostMapping("/quiz")
     public String submitAnswers(Model model) {
 
 

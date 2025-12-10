@@ -33,7 +33,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/register", "/login").permitAll() // Allow access to registration and login pages //
                         // Rutas restringidas por roles
                         .requestMatchers("/admin*").hasRole("ADMIN") // Restrict /admin y subfolders to users with the ADMIN role
-                        .requestMatchers("/viewer").hasRole("USER") // Restrict /viewer to users with the USER role
+                        .requestMatchers("/quiz").hasRole("USER") // Restrict /quiz to users with the USER role
                         // Regla por defecto para cualquier otra ruta
                         .anyRequest().authenticated() // Require authentication for all other endpoints
                 )
