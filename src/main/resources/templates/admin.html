@@ -26,8 +26,15 @@
 
 
         <!--TODO: hacer un div con un foreach de thymeleaf que reciba yrecorra todos los quiz para mostrarlos al admin-->
-        <div id="quizList">
+        <div id="quizList" th:object="${question}">
+            <table>
 
+<!--                TODO: HACER UN TOSTRING MAS BONITO ----- OPCION 1 CON EL TO STRING (YA FUNCIONAL))-->
+                <tr th:each="question : ${listaQuizzes}">
+                <td th:text="${question.toString}">Pregunta</td>
+
+
+            </table>
         </div>
 
         <form  th:action="@{/logout}"  method="get">

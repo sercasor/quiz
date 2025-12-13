@@ -56,15 +56,15 @@ public class WebsiteController {
                 .map(GrantedAuthority::getAuthority)
                 .findFirst()
                 .orElse("ROLE_USER"); // Default role if no authority is found
-// Redirect to the appropriate page based on the role
         model.addAttribute("role",role);
 
         //creacion del usuario para guardarlo ene l Model
         User user=userDetailsService.getUserByUsername(username);
         model.addAttribute("user",user);
 
-
+        // Redirect to the appropriate page based on the role
         if (role.equals("ROLE_ADMIN")) {
+            model.addAttribute("listaQuizzes",questionsService.loadQuizzes());
             return "admin"; // Return the admin.html template, it has the quiz options for admins
         } else {
             return "quiz"; // Return the quiz.html template. for users to view and submit quiz answers right after logging in.
@@ -154,9 +154,9 @@ public class WebsiteController {
             // Redirige o vuelve al formulario con errores. Importate que sea la misma vista o Thymeleaf no mostrará los errores
             return "/admin/add";
         }
-            //TODO: ACABAR ESTOS SETTERS PARA EVITAR LOS NULL
+            ArrayList<String> listaOpciones=new ArrayList<>(Arrays.asList(question.getInputOpcionesString()));
+            question.setOptions(listaOpciones);
 
-            question.setOptions((ArrayList<String>) Arrays.asList(question.getInputOpcionesString()));//importante el casting porque asList nos devuelve una List
             question.setCorrectAnswer(question.getOptions().get(Integer.parseInt(question.getInputCorrectAnswer()))); //el select nos devuelve un String --> lo parseamos a int y lo usamos para el get() del ArrayList como parámetro del setter
             model.addAttribute("question",question);
 

@@ -107,13 +107,12 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{" +
+        return
                 "id=" + id +
-                ", questionText='" + questionText + '\'' +
-                ", options=" + options +
-                ", correctAnswer='" + correctAnswer + '\'' +
-                ", inputOpcionesString=" + Arrays.toString(inputOpcionesString) +
-                ", inputCorrectAnswer='" + inputCorrectAnswer + '\'' +
-                '}';
+                ", Enunciado='" + questionText + '\'' +
+                ", Opcion A= " + options.get(0) +
+                ", Opcion B= " + options.get(1) +
+                ", Opcion C= " + options.get(2) +
+                ", Respuesta correcta='" + correctAnswer + '\'';
     }
 }
