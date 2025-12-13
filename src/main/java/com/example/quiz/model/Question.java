@@ -1,27 +1,52 @@
 package com.example.quiz.model;
-
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Question {
 
     private int id;
+    @NotEmpty(message="Debes insertar un enunciado para la pregunta")
     private String questionText;
     private ArrayList<String> options;
     private String correctAnswer;
+    private static int quizesCreated;
+
+    //variables auxiliares
+    @Size(min=3, message = "Debes insertar 3 respuestas")
+    private String inputOpcionesString[]; //campo auxiliar que guarda el input del usuario y que se convertirá en un arraylist usando como separador "_"
+    @NotEmpty(message="Debes insertar una respuesta correcta para la pregunta")
+    private String inputCorrectAnswer; //campo auxiliar que guarda el número de la opción correcta, se usará para acceder a la posición del ArrayList
 
     public Question() {
     }
 
-    public Question(int id, String questionText, ArrayList<String> options, String correctAnswer) {
-        this.id = id;
+
+
+    //Constructor que  excluye el ID y el arrayList como parámetros y se basa en los atributos auxiliares para asignar los valores al resto
+    public Question(String questionText, String inputOpcionesString[], String inputCorrectAnswer) {
+        this.id = Question.quizesCreated+1;
         this.questionText = questionText;
-        this.options = options;
-        this.correctAnswer = correctAnswer;
+        this.inputOpcionesString = inputOpcionesString;
+        this.inputCorrectAnswer = inputCorrectAnswer;
+
+        //asignación de atributos a partir de los atributos auxiliares
+        this.options= new ArrayList<>(Arrays.asList(inputOpcionesString));
+        this.correctAnswer= options.get(Integer.parseInt(inputCorrectAnswer));//el select nos devuelve un String, de ahí el casting
+
+        //contador de ID simulando un AutoIncrement
+        Question.quizesCreated++;
+
     }
+
+    //constructor completo
 
 
     /*Gettters y setters*/
+
     public int getId() {
         return id;
     }
@@ -54,6 +79,30 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
+    public static int getQuizesCreated() {
+        return quizesCreated;
+    }
+
+    public static void setQuizesCreated(int quizesCreated) {
+        Question.quizesCreated = quizesCreated;
+    }
+
+    public String[] getInputOpcionesString() {
+        return inputOpcionesString;
+    }
+
+    public void setInputOpcionesString(String inputOpcionesString[]) {
+        this.inputOpcionesString = inputOpcionesString;
+    }
+
+    public String getInputCorrectAnswer() {
+        return inputCorrectAnswer;
+    }
+
+    public void setInputCorrectAnswer(String inputCorrectAnswer) {
+        this.inputCorrectAnswer = inputCorrectAnswer;
+    }
+
     /*toString*/
 
     @Override
@@ -63,6 +112,8 @@ public class Question {
                 ", questionText='" + questionText + '\'' +
                 ", options=" + options +
                 ", correctAnswer='" + correctAnswer + '\'' +
+                ", inputOpcionesString=" + Arrays.toString(inputOpcionesString) +
+                ", inputCorrectAnswer='" + inputCorrectAnswer + '\'' +
                 '}';
     }
 }

@@ -18,7 +18,7 @@ public class QuestionsService {
 
     public List<Question> loadQuizzes(){
 
-        //devuelve un Collection con los valores del mapa. Por eso teemos  que castearlo a List si queremos que devuelva ese tipo
+        //devuelve un Collection con los valores del mapa. Por eso teemos  que castearlo con el método values (devuelve una Collection) a List si queremos que devuelva ese tipo
         List<Question> quizz= new ArrayList<>(this.questions.values());
 
         return quizz;

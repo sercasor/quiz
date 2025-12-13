@@ -5,35 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
 </head>
-<body>
+    <body>
 
-<h1>Admin Dashboard</h1>
-<div th:object="${user}">
-    <p>Bienvenido: <span th:text="*{username}"></span></p>
-</div>
+        <h1>Admin Dashboard</h1>
+        <div th:object="${user}">
+            <p>Bienvenido: <span th:text="*{username}"></span></p>
+        </div>
 
 
-<h2>Panel de control de Quiz</h2>
+        <h2>Panel de control de Quiz</h2>
 
-<form th:action="@{/addQuiz}" method="get">
-    <button type="submit">Añadir un quiz</button>
-</form>
-<form th:action="@{/addQuiz}" method="get">
-    <button type="submit">Modificar un quiz</button>
-</form>
 
-<!--TODO: hacer un div con un foreach de thymeleaf que reciba yrecorra todos los quiz para mostrarlos al admin-->
-<div id="quizList">
-
-</div>
-
-<!--TODO averiguar si esto es suficiente. Según la docu(apartado "Understanding Logout’s Architecture") debería funcionar este endpoint de forma automatica y sin configuracion de CSFR-->
-<form  th:action="@{/logout}"  method="get">
-    <button>Logout</button>
-</form>
+        <form th:action="@{/admin/add}" method="get">
+            <button>Añadir una pregunta</button>
+        </form>
+        <form th:action="@{/edit/add}" method="get">
+            <button>Editar una pregunta</button>
+        </form>
 
 
 
-</body>
+        <!--TODO: hacer un div con un foreach de thymeleaf que reciba yrecorra todos los quiz para mostrarlos al admin-->
+        <div id="quizList">
+
+        </div>
+
+        <form  th:action="@{/logout}"  method="get">
+            <button>Logout</button>
+        </form>
+
+
+
+    </body>
 </html>
 
