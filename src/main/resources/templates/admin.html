@@ -5,44 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
 </head>
-    <body>
+<body>
 
-        <h1>Admin Dashboard</h1>
-        <div th:object="${user}">
-            <p>Bienvenido: <span th:text="*{username}"></span></p>
-        </div>
-
-
-        <h2>Panel de control de Quiz</h2>
+<h1>Admin Dashboard</h1>
+<div th:object="${user}">
+    <p>Bienvenido: <span th:text="*{username}"></span></p>
+</div>
 
 
-        <form th:action="@{/admin/add}" method="get">
-            <button>Añadir una pregunta</button>
-        </form>
-        <form th:action="@{/edit/add}" method="get">
-            <button>Editar una pregunta</button>
-        </form>
+<h2>Panel de control de Quiz</h2>
 
 
-
-        <!--TODO: hacer un div con un foreach de thymeleaf que reciba yrecorra todos los quiz para mostrarlos al admin-->
-        <div id="quizList" th:object="${question}">
-            <table>
-
-<!--                TODO: HACER UN TOSTRING MAS BONITO ----- OPCION 1 CON EL TO STRING (YA FUNCIONAL))-->
-                <tr th:each="question : ${listaQuizzes}">
-                <td th:text="${question.toString}">Pregunta</td>
+<form th:action="@{/admin/add}" method="get">
+    <button>Añadir una pregunta</button>
+</form>
+<form th:action="@{/edit/add}" method="get">
+    <button>Editar una pregunta</button>
+</form>
 
 
-            </table>
-        </div>
+<!--TODO: hacer un div con un foreach de thymeleaf que reciba yrecorra todos los quiz para mostrarlos al admin-->
+<div id="quizList" th:object="${question}">
+    <table>
 
-        <form  th:action="@{/logout}"  method="get">
-            <button>Logout</button>
-        </form>
+        <tr th:each="question : ${listaQuizzes}">
+            <td th:text="${question.toString}">Pregunta</td>
 
 
+    </table>
+</div>
 
-    </body>
+<form th:action="@{/logout}" method="get">
+    <button>Logout</button>
+</form>
+
+
+</body>
 </html>
 

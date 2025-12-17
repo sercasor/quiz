@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;//SIRVE DE ALGO?
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
@@ -154,18 +154,24 @@ public class WebsiteController {
             // Redirige o vuelve al formulario con errores. Importate que sea la misma vista o Thymeleaf no mostrará los errores
             return "/admin/add";
         }
+            //añadimos al objeto el resto de atributos que nos faltan gracias a los atributos auxiliares tomados del form (opciones, enunciado y respuesta correcta)
+            question.setId(questionsService.getNextId());
+            Question.setQuizesCreated(questionsService.getNextId()+1);
             ArrayList<String> listaOpciones=new ArrayList<>(Arrays.asList(question.getInputOpcionesString()));
             question.setOptions(listaOpciones);
 
             question.setCorrectAnswer(question.getOptions().get(Integer.parseInt(question.getInputCorrectAnswer()))); //el select nos devuelve un String --> lo parseamos a int y lo usamos para el get() del ArrayList como parámetro del setter
+
+            //pasamos el objeto acabado al modelo
             model.addAttribute("question",question);
 
+        //actualizamos nuestra BD local con la nueva pregunta
         try {
             questionsService.addQuiz(question);
         } catch (Exception e) {
             System.out.println(e.getMessage());
 // Redirect to the /add endpoint
-            return "redirect:/admin/addQuiz?error";
+            return "redirect:/admin/addQuiz?error";//DEBUG: podríamos usar @PathVariable para darle capacidades extra y más info al usuario
         }
 
 

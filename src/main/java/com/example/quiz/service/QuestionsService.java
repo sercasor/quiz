@@ -29,11 +29,25 @@ public class QuestionsService {
         if(this.questions.containsKey(question.getId())) {
             throw new Exception("Se está añadiendo una pregunta que ya existe");
         } else {
-            this.questions.put(question.getId(), question);
+            int nextId = getNextId();
+            question.setId(nextId);
+
+            this.questions.put(nextId, question);
         }
 
 
 
+    }
+
+    /**
+     * Método auxiliar que nos sirve para sacar el número de preguntas almacenadas en nuestra BD.
+     * Nos puede servir para determinar el ID de una nueva pregunta y asignarlo tras instanciar el objeto previamente a añadirlo a la BD.
+     * @return int que representa la posición del último elemento del mapa de preguntas
+     */
+    public int getNextId(){
+
+        int id=this.questions.size();
+        return id;
     }
 
     public void editQuiz(Question question) throws Exception{

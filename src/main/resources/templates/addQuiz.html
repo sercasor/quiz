@@ -66,7 +66,7 @@
 
 
 
-            <!-- options -->
+            <!-- options, este array es atributo auxiliar que pasamos a ArrayList -->
             <p>Introduce las 3 posibles respuestas</p>
             <div>
                 <label for="optionA">Respuesta A
@@ -85,13 +85,6 @@
                 </label>
                 <input th:field="*{inputOpcionesString[2]}" type="text" id="optionC" required>
             </div>
-<!--            Opción inicial con separador "_" en lugar de 3 campos. La idea es separarlo con split y convertirlo ya en el atributo ArrayList mediante atributo auxiliar String y luego la respuesta correcta hacerlo emdiante un int+1 para la posicion en dicho ArrayList-->
-<!--            <div>-->
-<!--                <label for="options">Introduce las posibles respuestas separándolas con un guión bajo "_"</label><br>-->
-<!--                <input th:field="*{options}" type="text" id="options" >-->
-<!--                <p th:if="${#fields.hasErrors('options')}" style="color: red;"-->
-<!--                   th:errors="*{options}">Error en las opciones</p>-->
-<!--            </div>-->
 
             <!-- correctAnswer/solucion -->
             <div>
