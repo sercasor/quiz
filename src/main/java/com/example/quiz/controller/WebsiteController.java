@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -65,6 +66,7 @@ public class WebsiteController {
         // Redirect to the appropriate page based on the role
         if (role.equals("ROLE_ADMIN")) {
             model.addAttribute("listaQuizzes",questionsService.loadQuizzes());
+
             return "admin"; // Return the admin.html template, it has the quiz options for admins
         } else {
             return "quiz"; // Return the quiz.html template. for users to view and submit quiz answers right after logging in.
@@ -122,6 +124,7 @@ public class WebsiteController {
         return "redirect:/login?success";
     }
 
+    /*----------------------------------------------------ENDPOINTS PARA AÑADIR PREGUNTAS----------------------------------------------------*/
 
     @GetMapping("/admin/add")
     public String addQuizForm(Model model) {
@@ -185,20 +188,73 @@ public class WebsiteController {
 
     }
 
-//    TODO: ENDPOINTS PENDIENTES
-    /*
+    /*----------------------------------------------------TODO: ENDPOINTS PARA EDITAR PREGUNTAS----------------------------------------------------*/
 
 
-    @GetMapping("/admin/edit")
-    public String editQuizForm() {
+        @GetMapping("/admin/edit/{id}")
+    public String editQuizForm(
+        @PathVariable  int id,
+        Model model
+                ) {
+            //TODO: HACER ESTO MISMO PERO CON UN OBJETO TIPO qUESTION QUE SEAN LOS DATOS DE LA PREGUNTA ANTIGUOS PARA SU DISPLAY CON UN NOMBRE DE VARIABLE DIFERENTE?
+            Question question=new Question(); //question que bindeamos con el formulario para editar
+            model.addAttribute("question",question);
+
+            //son los datos antiguos simplemente para display
+            Question oldQuestion=this.questionsService.getQuestions().get(id);
+            String oldQuestionString=oldQuestion.toString();
+            model.addAttribute("oldQuestionString",oldQuestionString);
+
+            int oldQuestionID=oldQuestion.getId();
+            model.addAttribute("oldQuestionID",oldQuestionID);
 
         return "editQuiz"; // Returns the addQuiz.html template
     }
 
-    @PutMapping("/admin/edit")
-    public String editQuiz() {
+    @PostMapping("/admin/edit/{id}")
+    public String editQuiz(
+            @Valid @ModelAttribute Question question,
+            BindingResult bindingResult,
+            @PathVariable  int id,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            // Redirige o vuelve al formulario con errores. Importate que sea la misma vista o Thymeleaf no mostrará los errores
+            return "/admin/edit";
+        }
 
-        return "editQuiz"; // Returns the addQuiz.html template
+        if(question!=null){
+            model.addAttribute("question",question);
+        }
+
+        Question oldQuestion=this.questionsService.getQuestions().get(id);
+
+        //añadimos al objeto el resto de atributos que nos faltan gracias a los atributos auxiliares tomados del form (opciones, enunciado y respuesta correcta)
+
+        try {
+            ArrayList<String> listaOpciones=new ArrayList<>(Arrays.asList(question.getInputOpcionesString()));
+
+            question.setOptions(listaOpciones);
+
+            question.setCorrectAnswer(question.getOptions().get(Integer.parseInt(question.getInputCorrectAnswer()))); //el select nos devuelve un String --> lo parseamos a int y lo usamos para el get() del ArrayList como parámetro del setter
+
+            //pasamos el objeto acabado al modelo
+            model.addAttribute("question",question);
+
+            //actualizamos nuestra BD local con la nueva pregunta
+            questionsService.editQuiz(question);
+
+            logger.info("Se ha recibido con éxito la petición de cambio de una pregunta. Los nuevos datos son: "+ question.toString());
+
+        } catch (NullPointerException e) {
+            logger.info("El input de las opciones ha dado un null. Mensaje error: "+ e.getMessage());
+        }catch (Exception e) {
+            logger.info("Se ha producido un error:  "+ e.getMessage());
+            return "redirect:/admin/edit?error";//DEBUG: tal vez mejor sin UTMs
+        }
+
+        return "redirect:/admin/edit/{id}?success"; //IDEA: usar un RequestParam en el endpoint del get para mostrar el mensake de éxito? O tal vez hacer algo con Thymeleaf
+
+
     }
 
     @DeleteMapping("/admin/edit")
@@ -206,6 +262,12 @@ public class WebsiteController {
 
         return "editQuiz"; // Returns the addQuiz.html template
     }
+
+//    TODO: ENDPOINTS PENDIENTES
+    /*
+
+
+
 
 
 

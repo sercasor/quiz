@@ -12,9 +12,12 @@ import java.util.Map;
 public class QuestionsService {
 
     // Simula una base de datos en memoria usando un Map
-    // En una aplicación real, esto sería reemplazado por un Repository que conecte con una BD real
+    // En una aplicación real, esto sería reemplazado por un Repository que conecte con una BD real. Los datos los tenemos siempre presente mientras la app se ejecute porque viven en la service layer  del ApplicationContext gracias al Bean creado con la anotacion @Service (singleton scope por defecto). Spring crea UNA instancia al iniciar y la reutiliza en toda la app
     private final Map<Integer, Question> questions = new HashMap<>();
 
+    public Map<Integer, Question> getQuestions() {
+        return questions;
+    }
 
     public List<Question> loadQuizzes(){
 

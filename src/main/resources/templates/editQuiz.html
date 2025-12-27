@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .registration-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 700px;
+            text-align: center;
+        }
+        .registration-container h2 {
+            margin-bottom: 20px;
+        }
+        .registration-container input, .registration-container select {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .registration-container button {
+            width: 80%;
+            padding: 10px;
+            background-color: #2d2db0;
+            margin:2%;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .registration-container button:hover {
+            background-color: #2d2db0;
+        }
+
+		.error {
+            color: red;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+        <div class="registration-container">
+            <h2>Editar una pregunta</h2>
+            <p>Datos de la pregunta seleccionada </p>
+            <div id="quizList">
+
+                <p th:text="${oldQuestionString}">Pregunta</p>
+
+            </div>
+            <div id="editorPreguntas" th:object="${question}" >
+
+                <!--TODO: AÑADIENDO, POR ACABAR PARA EDITAR EL FORMULARIO-->
+                <h3>Introduce los nuevos datos de la pregunta</h3>
+                <form th:action="@{/admin/edit/{id}(id=${oldQuestionID})}"  method="post">
+                    <div>
+                        <!--           questionText/enunciado  -->
+                        <input th:field="*{questionText}" type="text" id="questionText"
+                               placeholder="Enunciado" >
+                        <p th:if="${#fields.hasErrors('questionText')}" style="color: red;"
+                           th:errors="*{questionText}">Error en enunciado</p>
+                    </div>
+
+
+
+                    <!-- options, este array es atributo auxiliar que pasamos a ArrayList -->
+                    <p>Introduce las 3 posibles respuestas</p>
+                    <div>
+                        <label for="optionA">Respuesta A
+                        </label>
+                        <input th:field="*{inputOpcionesString[0]}" type="text" id="optionA" required>
+                    </div>
+                    <div>
+                        <label for="optionB">Respuesta B
+
+                        </label>
+                        <input th:field="*{inputOpcionesString[1]}" type="text" id="optionB" required>
+
+                    </div>
+                    <div>
+                        <label for="optionC">Respuesta C
+                        </label>
+                        <input th:field="*{inputOpcionesString[2]}" type="text" id="optionC" required>
+                    </div>
+
+                    <!-- correctAnswer/solucion -->
+                    <div>
+                        <label for="inputCorrectAnswer">Elige la respuesta correcta:</label>
+
+                        <select th:field="*{inputCorrectAnswer}" name="inputCorrectAnswer" id="inputCorrectAnswer">
+                            <option value="0">A</option>
+                            <option value="1">B</option>
+                            <option value="2">C</option>
+                        </select>
+                    </div>
+
+
+
+                    <!-- Submit Button -->
+                    <button type="submit">Enviar nueva pregunta</button>
+                </form>
+                <!-- Error Message -->
+                <div th:if="${param.error}" class="error">
+                    pregunta inválida.
+                </div>
+
+            </div>
+
+
+
+
+
+
+            <!--TODO: AÑADIENDO, POR ACABAR -->
+
+            <div>
+                <form  th:action="@{/home}"  method="get">
+                    <button>Volver atrás</button>
+                </form>
+                <form  th:action="@{/logout}"  method="get">
+                    <button>Logout</button>
+                </form>
+            </div>
+        </div>
+
+</body>
+</html>

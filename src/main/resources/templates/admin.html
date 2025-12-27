@@ -19,7 +19,7 @@
 <form th:action="@{/admin/add}" method="get">
     <button>Añadir una pregunta</button>
 </form>
-<form th:action="@{/edit/add}" method="get">
+<form th:action="@{/admin/edit}" method="get">
     <button>Editar una pregunta</button>
 </form>
 
@@ -30,7 +30,13 @@
 
         <tr th:each="question : ${listaQuizzes}">
             <td th:text="${question.toString}">Pregunta</td>
-
+            <!--DEBUGGING EL PATH VARIABLE-->
+            <td>
+                <form th:action="@{/admin/edit/{id}(id=${question.id})}" method="get">
+                    <button>Editar  pregunta</button>
+                </form>
+            </td>
+        </tr>
 
     </table>
 </div>
