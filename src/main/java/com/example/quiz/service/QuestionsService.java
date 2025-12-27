@@ -64,8 +64,8 @@ public class QuestionsService {
 
     }
 
-    public void deleteQuiz(String questionID) throws Exception{
-
+    public void deleteQuiz(Question question) throws Exception{
+        Integer questionID= question.getId();
         if(this.questions.containsKey(questionID)) {
             this.questions.remove(questionID);
         } else {

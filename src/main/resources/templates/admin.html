@@ -36,6 +36,11 @@
                     <button>Editar  pregunta</button>
                 </form>
             </td>
+            <td>
+                <form th:action="@{/admin/delete/{id}(id=${question.id})}" method="get">
+                    <button>Borrar  pregunta</button>
+                </form>
+            </td>
         </tr>
 
     </table>

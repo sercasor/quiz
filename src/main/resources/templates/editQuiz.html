@@ -64,7 +64,6 @@
             </div>
             <div id="editorPreguntas" th:object="${question}" >
 
-                <!--TODO: AÑADIENDO, POR ACABAR PARA EDITAR EL FORMULARIO-->
                 <h3>Introduce los nuevos datos de la pregunta</h3>
                 <form th:action="@{/admin/edit/{id}(id=${oldQuestionID})}"  method="post">
                     <div>
@@ -121,11 +120,6 @@
             </div>
 
 
-
-
-
-
-            <!--TODO: AÑADIENDO, POR ACABAR -->
 
             <div>
                 <form  th:action="@{/home}"  method="get">

@@ -191,6 +191,7 @@ public class WebsiteController {
     /*----------------------------------------------------TODO: ENDPOINTS PARA EDITAR PREGUNTAS----------------------------------------------------*/
 
 
+
         @GetMapping("/admin/edit/{id}")
     public String editQuizForm(
         @PathVariable  int id,
@@ -219,7 +220,7 @@ public class WebsiteController {
             Model model) {
         if (bindingResult.hasErrors()) {
             // Redirige o vuelve al formulario con errores. Importate que sea la misma vista o Thymeleaf no mostrará los errores
-            return "/admin/edit";
+            return "editQuiz";
         }
 
         if(question!=null){
@@ -257,10 +258,60 @@ public class WebsiteController {
 
     }
 
-    @DeleteMapping("/admin/edit")
-    public String deleteQuiz() {
+    /*----------------------------------------------------TODO: ENDPOINTS PARA BORRAR PREGUNTAS----------------------------------------------------*/
 
-        return "editQuiz"; // Returns the addQuiz.html template
+    @GetMapping("/admin/delete/{id}")
+    public String deleteQuizForm(
+        @PathVariable  int id,
+        Model model
+                ) {
+
+        //son los datos de la pregunta que vamos a borrar
+        Question question=this.questionsService.getQuestions().get(id);
+        model.addAttribute("question",question);
+
+        //OPCION CON MODEL ATTRIBUTES SI NO CONSEGUIMOS EL TOSTRING Y EL ID
+        //son los datos antiguos simplemente para display
+        String questionString=question.toString();
+        model.addAttribute("questionString",questionString);
+
+        int questionID=question.getId();
+        model.addAttribute("questionID",questionID);
+
+        return "deleteQuiz"; // Returns the deleteQuiz.html template
+
+
+    }
+    @PostMapping("/admin/delete/{id}")
+    public String deleteQuiz(
+            @Valid @ModelAttribute Question question,
+            BindingResult bindingResult,
+            @PathVariable  int id,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            // Redirige o vuelve al formulario con errores. Importate que sea la misma vista o Thymeleaf no mostrará los errores
+            return "deleteQuiz";
+        }
+
+        if(question!=null){
+            model.addAttribute("question",question);
+        }
+
+
+
+        try {
+            model.addAttribute("question",question);
+            logger.info("Se ha solicitado la eliminación de una pregunta con los siguientes  datos: "+ question.toString());
+            //actualizamos nuestra BD local
+            questionsService.deleteQuiz(question);
+            logger.info("Pregunta borrada con éxito");
+
+        } catch (Exception e) {
+            logger.info("Se ha producido un error:  "+ e.getMessage());
+            return "redirect:/admin/edit?error";//DEBUG: tal vez mejor sin UTMs
+        }
+
+        return "redirect:/admin/delete/{id}?success";
     }
 
 //    TODO: ENDPOINTS PENDIENTES
