@@ -130,15 +130,6 @@ public class WebsiteController {
     public String addQuizForm(Model model) {
         Question question=new Question();
 
-        //TODO: pensar si esto realmente vale la pena más allá de ver los valores que se van pasando
-        if (!model.containsAttribute("question")){
-            System.out.println("No existía el atributo question. Va a añadirse al modelo al final ");
-
-        }else {
-            System.out.println("Ya existe el atributo question. Su valor es: ");
-            System.out.println(model.getAttribute("question")); //DEBUG
-        }
-        //TODO: add attribute al Model??
         model.addAttribute("question", question);
 
 
@@ -172,7 +163,7 @@ public class WebsiteController {
         try {
             questionsService.addQuiz(question);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
 // Redirect to the /add endpoint
             return "redirect:/admin/addQuiz?error";//DEBUG: podríamos usar @PathVariable para darle capacidades extra y más info al usuario
         }
@@ -269,37 +260,33 @@ public class WebsiteController {
         //son los datos de la pregunta que vamos a borrar
         Question question=this.questionsService.getQuestions().get(id);
         model.addAttribute("question",question);
+        logger.info("Se ha pasado el atributo question con el valor: "+model.getAttribute("question")); //DEBUG: BORRAR
 
         //OPCION CON MODEL ATTRIBUTES SI NO CONSEGUIMOS EL TOSTRING Y EL ID
         //son los datos antiguos simplemente para display
         String questionString=question.toString();
         model.addAttribute("questionString",questionString);
+        logger.info("Se ha pasado el atributo questionString con el valor: "+model.getAttribute("questionString")); //DEBUG: BORRAR
+
 
         int questionID=question.getId();
         model.addAttribute("questionID",questionID);
-
+        logger.info("Se ha pasado el atributo questionID con el valor: "+model.getAttribute("questionID")); //DEBUG: BORRAR
         return "deleteQuiz"; // Returns the deleteQuiz.html template
 
 
     }
     @PostMapping("/admin/delete/{id}")
     public String deleteQuiz(
-            @Valid @ModelAttribute Question question,
-            BindingResult bindingResult,
             @PathVariable  int id,
             Model model) {
-        if (bindingResult.hasErrors()) {
-            // Redirige o vuelve al formulario con errores. Importate que sea la misma vista o Thymeleaf no mostrará los errores
-            return "deleteQuiz";
-        }
 
-        if(question!=null){
-            model.addAttribute("question",question);
-        }
 
 
 
         try {
+            //son los datos de la pregunta que vamos a borrar
+            Question question=this.questionsService.getQuestions().get(id);
             model.addAttribute("question",question);
             logger.info("Se ha solicitado la eliminación de una pregunta con los siguientes  datos: "+ question.toString());
             //actualizamos nuestra BD local
@@ -308,10 +295,10 @@ public class WebsiteController {
 
         } catch (Exception e) {
             logger.info("Se ha producido un error:  "+ e.getMessage());
-            return "redirect:/admin/edit?error";//DEBUG: tal vez mejor sin UTMs
+            return "redirect:/admin/delete/{id}?error";//DEBUG: tal vez mejor sin UTMs
         }
 
-        return "redirect:/admin/delete/{id}?success";
+        return "redirect:/home?deletesuccess";
     }
 
 //    TODO: ENDPOINTS PENDIENTES
