@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+//import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*; // nos sirve para testeo del logout tras añadir la dependencia spring-security-test-7.0.2.jar
+
 
 // Indica que esta clase es una clase de configuración de Spring
 @Configuration
@@ -43,7 +45,8 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/home", true) // Redirect to /homeafter successful login
                         .permitAll()
                 )
-                .logout(logout -> logout
+                .logout((logout) -> logout
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/home")//PRUEBAS de redirecciones de logout
                         .permitAll()
                 );

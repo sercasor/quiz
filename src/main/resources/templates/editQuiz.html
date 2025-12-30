@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Page</title>
+    <meta name="robots" content="noindex">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -125,7 +126,7 @@
                 <form  th:action="@{/home}"  method="get">
                     <button>Volver atrás</button>
                 </form>
-                <form  th:action="@{/logout}"  method="get">
+                <form  th:action="@{/logout}"  method="post">
                     <button>Logout</button>
                 </form>
             </div>

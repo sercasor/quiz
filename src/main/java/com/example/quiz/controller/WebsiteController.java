@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
 
 @Controller
 public class WebsiteController {
@@ -63,12 +60,14 @@ public class WebsiteController {
         User user=userDetailsService.getUserByUsername(username);
         model.addAttribute("user",user);
 
+        //question list to display in admin or user dashboard respectively
+        model.addAttribute("listaQuizzes",questionsService.loadQuizzes());
         // Redirect to the appropriate page based on the role
         if (role.equals("ROLE_ADMIN")) {
-            model.addAttribute("listaQuizzes",questionsService.loadQuizzes());
-
             return "admin"; // Return the admin.html template, it has the quiz options for admins
         } else {
+            List<Question> respuestasUsuario=new ArrayList<>();
+            model.addAttribute("respuestasUsuario",respuestasUsuario);
             return "quiz"; // Return the quiz.html template. for users to view and submit quiz answers right after logging in.
         }
 
@@ -179,7 +178,7 @@ public class WebsiteController {
 
     }
 
-    /*----------------------------------------------------TODO: ENDPOINTS PARA EDITAR PREGUNTAS----------------------------------------------------*/
+    /*----------------------------------------------------ENDPOINTS PARA EDITAR PREGUNTAS----------------------------------------------------*/
 
 
 
@@ -188,7 +187,7 @@ public class WebsiteController {
         @PathVariable  int id,
         Model model
                 ) {
-            //TODO: HACER ESTO MISMO PERO CON UN OBJETO TIPO qUESTION QUE SEAN LOS DATOS DE LA PREGUNTA ANTIGUOS PARA SU DISPLAY CON UN NOMBRE DE VARIABLE DIFERENTE?
+
             Question question=new Question(); //question que bindeamos con el formulario para editar
             model.addAttribute("question",question);
 
@@ -249,7 +248,8 @@ public class WebsiteController {
 
     }
 
-    /*----------------------------------------------------TODO: ENDPOINTS PARA BORRAR PREGUNTAS----------------------------------------------------*/
+    /*----------------------------------------------------ENDPOINTS PARA BORRAR PREGUNTAS----------------------------------------------------*/
+
 
     @GetMapping("/admin/delete/{id}")
     public String deleteQuizForm(
@@ -301,27 +301,22 @@ public class WebsiteController {
         return "redirect:/home?deletesuccess";
     }
 
-//    TODO: ENDPOINTS PENDIENTES
-    /*
+    /*----------------------------------------------------TODO: ENDPOINTS DE RESULTADOS (USUARIOS)----------------------------------------------------*/
 
 
-
-
-
-
-    @GetMapping("/result")
+    @GetMapping("/results")
     public String result() {
 
-        return "quiz"; // Returns the addQuiz.html template
+        return "results";
     }
 
 
-    @PostMapping("/quiz")
+    @PostMapping("/results")
     public String submitAnswers(Model model) {
 
+        return "results";
 
-
-    }*/
+    }
 
 
 }

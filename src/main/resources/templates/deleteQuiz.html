@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
     <title>Registration Page</title>
     <style>
         body {
@@ -90,7 +91,7 @@
                 <form  th:action="@{/home}"  method="get">
                     <button>Volver atrás</button>
                 </form>
-                <form  th:action="@{/logout}"  method="get">
+                <form  th:action="@{/logout}"  method="post">
                     <button>Logout</button>
                 </form>
             </div>

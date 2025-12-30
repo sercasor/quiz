@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page</title>
+    <meta name="robots" content="noindex">
+    <title>Panel Admin</title>
 </head>
 <body>
 
-<h1>Admin Dashboard</h1>
+<h1>Panel de Admin</h1>
 <div th:object="${user}">
     <p>Bienvenido: <span th:text="*{username}"></span></p>
 </div>
@@ -18,9 +19,6 @@
 
 <form th:action="@{/admin/add}" method="get">
     <button>Añadir una pregunta</button>
-</form>
-<form th:action="@{/admin/edit}" method="get">
-    <button>Editar una pregunta</button>
 </form>
 
 
@@ -46,9 +44,10 @@
     </table>
 </div>
 
-<form th:action="@{/logout}" method="get">
+<form th:action="@{/logout}" method="post">
     <button>Logout</button>
 </form>
+
 
 
 </body>
