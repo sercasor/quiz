@@ -66,7 +66,11 @@ public class WebsiteController {
         if (role.equals("ROLE_ADMIN")) {
             return "admin"; // Return the admin.html template, it has the quiz options for admins
         } else {
-            List<Question> respuestasUsuario=new ArrayList<>();
+            List<Question> respuestasUsuario=new ArrayList<>(questionsService.loadQuizzes());
+
+            for (Question question:respuestasUsuario) {
+                question.
+            }
             model.addAttribute("respuestasUsuario",respuestasUsuario);
             return "quiz"; // Return the quiz.html template. for users to view and submit quiz answers right after logging in.
         }

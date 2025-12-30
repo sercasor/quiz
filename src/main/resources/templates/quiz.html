@@ -7,37 +7,46 @@
 </head>
 <body>
 <h1>Panel de usuario</h1>
-<p>Hola, <span th:text="${username}"></span>!, a continuación tienes tu cuestionario. Cada pregunta tiene UNA respuesta correcta y vale 1 punto. </p>
-<p>Para aprobar necesitarás acertar al menos la mitad de las preguntas. ¡Suerte!</p>
 
 
 <!--Lista de preguntas-->
 <!--TODO: hacer un condicional para que no de error esta pagina y la de results en el caso de no haber respuestas-->
-<div id="quizList" th:object="${respuestasUsuario}">
-    <table>
-        <tr th:each="question : ${listaQuizzes}">
-            <td>Pregunta nº: <span th:text="${question.id}">Número</span></td>
+<div id="cuestionario" th:if="${!listaQuizzes.isEmpty()}">
+    <p>Hola, <span th:text="${username}"></span>!, a continuación tienes tu cuestionario. Cada pregunta tiene UNA respuesta correcta y vale 1 punto. </p>
+    <p>Para aprobar necesitarás acertar al menos la mitad de las preguntas. ¡Suerte!</p>
+    <div id="quizList" th:object="${respuestasUsuario}">
+        <table>
+            <tr th:each="question : ${listaQuizzes}">
+                <td>Pregunta nº: <span th:text="${question.id}">Número</span></td>
                 <td th:text="${question.questionText}">Enunciado</td>
                 <td th:text="${question.questionText}">Respuesta A</td>
                 <td th:text="${question.questionText}">Respuesta B</td>
                 <td th:text="${question.questionText}">Respuesta C</td>
-        </tr>
-    </table>
-<!--    Elección de respuesta-->
-    <form th:action="@{/results}">
-        <div th:each="question : ${listaQuizzes}">
-            <label for="inputCorrectAnswer" th:field="*{id}" th:text="Respuesta para la pregunta nº "><span th:text="${question.id}">Número</span></label>
-            <select th:field="*{inputCorrectAnswer}" name="inputCorrectAnswer" id="inputCorrectAnswer">
-                <option value="0">A</option>
-                <option value="1">B</option>
-                <option value="2">C</option>
-            </select>
-        </div>
-        <button type="submit">Enviar respuestas</button>
-    </form>
+            </tr>
+        </table>
+        <!--    Elección de respuesta-->
+        <form th:action="@{/results}" method="post">
+            <div th:each="question : ${listaQuizzes}">
+                <label th:for="'respuesta_' + ${question.id}">
+                    <strong>Respuesta para la pregunta nº <span th:text="${question.id}"></span>:</strong>
+                    <span th:text="${question.questionText}"></span>
+                </label>
+                <select th:name="${respuestasUsuario}" name="inputCorrectAnswer" >
+                    <option value="0">A</option>
+                    <option value="1">B</option>
+                    <option value="2">C</option>
+                </select>
+            </div>
+            <button type="submit">Enviar respuestas</button>
+        </form>
 
 
+    </div>
 </div>
+<div th:unless="${listaQuizzes.isEmpty()}">
+    <p>Todavía no hay ningún cuestionario creado. Es necesario que un administrador cree al menos una pregunta</p>
+</div>
+
 
 
 <!--Navegacion básica-->
