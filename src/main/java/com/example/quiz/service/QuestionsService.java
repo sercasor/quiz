@@ -15,6 +15,10 @@ public class QuestionsService {
     // En una aplicación real, esto sería reemplazado por un Repository que conecte con una BD real. Los datos los tenemos siempre presente mientras la app se ejecute porque viven en la service layer  del ApplicationContext gracias al Bean creado con la anotacion @Service (singleton scope por defecto). Spring crea UNA instancia al iniciar y la reutiliza en toda la app
     private final Map<Integer, Question> questions = new HashMap<>();
 
+    /**
+     * Getter del Map que representa la BD en memoria con objetos Question
+     * @return variable tipo Map con objetos Question
+     */
     public Map<Integer, Question> getQuestions() {
         return questions;
     }

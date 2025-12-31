@@ -9,17 +9,17 @@ import java.util.stream.Stream;
 public class Question {
 
     private int id;
-    @NotEmpty(message="Debes insertar un enunciado para la pregunta")
+    //  DEBUG  @NotEmpty(message="Debes insertar un enunciado para la pregunta")
     private String questionText;
     private ArrayList<String> options;
     private String correctAnswer;
     private static int quizesCreated;
 
     //variables auxiliares
-    @Size(min=3, message = "Debes insertar 3 respuestas")
-    private String inputOpcionesString[]; //campo auxiliar que guarda el input del usuario y que se convertirá en un arraylist usando como separador "_"
-    @NotEmpty(message="Debes insertar una respuesta correcta para la pregunta")
-    private String inputCorrectAnswer; //campo auxiliar que guarda el número de la opción correcta, se usará para acceder a la posición del ArrayList
+//  DEBUG  @Size(min=3, message = "Debes insertar 3 respuestas")
+    private String inputOpcionesString[]; //campo auxiliar que guarda el input del usuario
+    //  DEBUG  @NotEmpty(message="Debes insertar una respuesta correcta para la pregunta")
+    private String inputCorrectAnswer; //campo auxiliar que guarda el número de la opción correcta, se usará para acceder a la posición del ArrayList. RECORDAR que en HTML se pasa como String el input del select aunque el value no vaya entrecomillado
 
     public Question() {
     }

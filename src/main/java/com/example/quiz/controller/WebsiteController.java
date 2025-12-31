@@ -61,17 +61,16 @@ public class WebsiteController {
         model.addAttribute("user",user);
 
         //question list to display in admin or user dashboard respectively
-        model.addAttribute("listaQuizzes",questionsService.loadQuizzes());
+        List<Question> listaQuizzes=new ArrayList<>(questionsService.loadQuizzes());
+        model.addAttribute("listaQuizzes",listaQuizzes);
+        logger.info("En el model se ha añadido el atributo listaQuizzes con los siguientes valores: "+listaQuizzes);
         // Redirect to the appropriate page based on the role
         if (role.equals("ROLE_ADMIN")) {
             return "admin"; // Return the admin.html template, it has the quiz options for admins
         } else {
-            List<Question> respuestasUsuario=new ArrayList<>(questionsService.loadQuizzes());
-
-            for (Question question:respuestasUsuario) {
-                question.
-            }
+            List<Question> respuestasUsuario=new ArrayList<>(questionsService.loadQuizzes()); //List idéntica que modificamos en la vista y luego usaremos en el endpoint para comparar
             model.addAttribute("respuestasUsuario",respuestasUsuario);
+            logger.info("En el model se ha añadido el atributo respuestasUsuario con los siguientes valores: "+respuestasUsuario);
             return "quiz"; // Return the quiz.html template. for users to view and submit quiz answers right after logging in.
         }
 
@@ -97,7 +96,9 @@ public class WebsiteController {
 
     @PostMapping("/register")
 
-    public String registerUser(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model) {
+    public String registerUser(@Valid @ModelAttribute User user,
+                               BindingResult bindingResult,
+                               Model model) {
         // 1. Verifica si hay errores de validación
         if (bindingResult.hasErrors()) {
             // Redirige o vuelve al formulario con errores
@@ -316,7 +317,9 @@ public class WebsiteController {
 
 
     @PostMapping("/results")
-    public String submitAnswers(Model model) {
+    public String submitAnswers(
+            List<Question> respuestasUsuario,
+            Model model) {
 
         return "results";
 

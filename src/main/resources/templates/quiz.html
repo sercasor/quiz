@@ -13,25 +13,28 @@
 <!--TODO: hacer un condicional para que no de error esta pagina y la de results en el caso de no haber respuestas-->
 <div id="cuestionario" th:if="${!listaQuizzes.isEmpty()}">
     <p>Hola, <span th:text="${username}"></span>!, a continuación tienes tu cuestionario. Cada pregunta tiene UNA respuesta correcta y vale 1 punto. </p>
+    <table>
+        <tr th:each="question : ${listaQuizzes}">
+            <td>Pregunta nº: <span th:text="${question.id}">Número</span></td>
+            <td th:text="${question.questionText}">Enunciado</td>
+            <td th:text="${question.questionText}">Respuesta A</td>
+            <td th:text="${question.questionText}">Respuesta B</td>
+            <td th:text="${question.questionText}">Respuesta C</td>
+        </tr>
+    </table>
     <p>Para aprobar necesitarás acertar al menos la mitad de las preguntas. ¡Suerte!</p>
     <div id="quizList" th:object="${respuestasUsuario}">
-        <table>
-            <tr th:each="question : ${listaQuizzes}">
-                <td>Pregunta nº: <span th:text="${question.id}">Número</span></td>
-                <td th:text="${question.questionText}">Enunciado</td>
-                <td th:text="${question.questionText}">Respuesta A</td>
-                <td th:text="${question.questionText}">Respuesta B</td>
-                <td th:text="${question.questionText}">Respuesta C</td>
-            </tr>
-        </table>
         <!--    Elección de respuesta-->
+
         <form th:action="@{/results}" method="post">
-            <div th:each="question : ${listaQuizzes}">
-                <label th:for="'respuesta_' + ${question.id}">
-                    <strong>Respuesta para la pregunta nº <span th:text="${question.id}"></span>:</strong>
-                    <span th:text="${question.questionText}"></span>
-                </label>
-                <select th:name="${respuestasUsuario}" name="inputCorrectAnswer" >
+            <div th:each="pregunta : ${respuestasUsuario}" th:object="${pregunta}">
+                <p>
+                    <strong>Pregunta nº <span th:text="${pregunta.id}"></span>:</strong>
+                    <span th:text="${pregunta.questionText}"></span>
+                </p>
+
+                <!-- Importante el th:field para el bindeo del objeto aunque tengamos nuestro foreach -->
+                <select th:field="*{inputCorrectAnswer}">
                     <option value="0">A</option>
                     <option value="1">B</option>
                     <option value="2">C</option>
@@ -43,7 +46,7 @@
 
     </div>
 </div>
-<div th:unless="${listaQuizzes.isEmpty()}">
+<div th:if="${listaQuizzes.isEmpty()}">
     <p>Todavía no hay ningún cuestionario creado. Es necesario que un administrador cree al menos una pregunta</p>
 </div>
 
