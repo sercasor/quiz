@@ -12,33 +12,33 @@
 <!--Lista de preguntas-->
 <!--TODO: hacer un condicional para que no de error esta pagina y la de results en el caso de no haber respuestas-->
 <div id="cuestionario" th:if="${!listaQuizzes.isEmpty()}">
-    <p>Hola, <span th:text="${username}"></span>!, a continuación tienes tu cuestionario. Cada pregunta tiene UNA respuesta correcta y vale 1 punto. </p>
-    <table>
-        <tr th:each="question : ${listaQuizzes}">
-            <td>Pregunta nº: <span th:text="${question.id}">Número</span></td>
-            <td th:text="${question.questionText}">Enunciado</td>
-            <td th:text="${question.questionText}">Respuesta A</td>
-            <td th:text="${question.questionText}">Respuesta B</td>
-            <td th:text="${question.questionText}">Respuesta C</td>
-        </tr>
-    </table>
+    <p>Hola, <span th:text="${username}"></span>!, a continuación tienes tu cuestionario. Cada pregunta tiene UNA respuesta correcta entre 3 opciones y vale 1 punto. </p>
     <p>Para aprobar necesitarás acertar al menos la mitad de las preguntas. ¡Suerte!</p>
-    <div id="quizList" th:object="${respuestasUsuario}">
+    <div id="quizList">
         <!--    Elección de respuesta-->
 
         <form th:action="@{/results}" method="post">
-            <div th:each="pregunta : ${respuestasUsuario}" th:object="${pregunta}">
-                <p>
-                    <strong>Pregunta nº <span th:text="${pregunta.id}"></span>:</strong>
-                    <span th:text="${pregunta.questionText}"></span>
-                </p>
+            <div th:each="pregunta : ${listaQuizzes}" >
+                    <p>
+                        <strong>Pregunta nº <span th:text="${pregunta.id}"></span>:</strong>
+                        <span th:text="${pregunta.questionText}"></span>
+                    </p>
 
-                <!-- Importante el th:field para el bindeo del objeto aunque tengamos nuestro foreach -->
-                <select th:field="*{inputCorrectAnswer}">
-                    <option value="0">A</option>
-                    <option value="1">B</option>
-                    <option value="2">C</option>
-                </select>
+                    <!-- Importante el th:name para pasar al Map cada respuesta del usuario. th:field y bindeo con objetos no es la mejor opción tras testarlo
+                    para visualizarlo: mandamos cada respuesta siendo el key el ID (definido con atributo "name" y con un prefijo) y el value (definido con el atributo HTML value).
+                    En el controller capturamos esto con @RequestParam indicando que es un Map<String,String>.
+                    OJO, que para recibir claves diferentes necesitamos algo así como "respuesta1=A". Para lograr eso necesitamos la concateniacion del literal "respuesta" y del ID, que es la variable
+                    Esto lo conseguimos con la concatenacion teniendoo todo entre comillas simples o usando literal substitutions con el pipe. La razón esque en Thymeleaf no puedes anidar expresiones ${} dentro de ${}
+                    Así que lo más sencillo es mandar la info en pares que sean facilmente trabajables gracias al prefijo respuesta_ y listo (no usarlo puede ser algo confuso, especialmente con los value de las option siendo números)
+                    -->
+
+                    <select th:name="|respuesta_${pregunta.id}|">
+                        <option value="0">A</option>
+                        <option value="1">B</option>
+                        <option value="2">C</option>
+                    </select>
+
+
             </div>
             <button type="submit">Enviar respuestas</button>
         </form>

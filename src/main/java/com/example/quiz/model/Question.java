@@ -105,14 +105,30 @@ public class Question {
 
     /*toString*/
 
+//    //toString funcional a dia de 01/01/2026, DESACTIVADO PARA DEBUGGING
+//    @Override
+//    public String toString() {
+//        return
+//                "id=" + id +
+//                ", Enunciado='" + questionText + '\'' +
+//                ", Opcion A= " + options.get(0) +
+//                ", Opcion B= " + options.get(1) +
+//                ", Opcion C= " + options.get(2) +
+//                ", Respuesta correcta='" + correctAnswer + '\'';
+//    }
+
+
     @Override
     public String toString() {
-        return
+        return "Question{" +
                 "id=" + id +
-                ", Enunciado='" + questionText + '\'' +
-                ", Opcion A= " + options.get(0) +
-                ", Opcion B= " + options.get(1) +
-                ", Opcion C= " + options.get(2) +
-                ", Respuesta correcta='" + correctAnswer + '\'';
+                ", questionText='" + questionText + '\'' +
+                ", options=" + options +
+                ", correctAnswer='" + correctAnswer + '\'' +
+                ", inputOpcionesString=" + Arrays.toString(inputOpcionesString) +
+                ", inputCorrectAnswer='" + inputCorrectAnswer + '\'' +
+                '}';
     }
 }
+
+

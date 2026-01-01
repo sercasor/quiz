@@ -68,9 +68,10 @@ public class WebsiteController {
         if (role.equals("ROLE_ADMIN")) {
             return "admin"; // Return the admin.html template, it has the quiz options for admins
         } else {
-            List<Question> respuestasUsuario=new ArrayList<>(questionsService.loadQuizzes()); //List idéntica que modificamos en la vista y luego usaremos en el endpoint para comparar
-            model.addAttribute("respuestasUsuario",respuestasUsuario);
-            logger.info("En el model se ha añadido el atributo respuestasUsuario con los siguientes valores: "+respuestasUsuario);
+//            //DEBUG, NO PARECE NECESARIO Y ES MÁS BIEN COMPLICADO DE IMPLEMENTAR CON THYMELEAF
+//            Map<Integer,String> respuestasUsuario=new HashMap<>(); //List idéntica que modificamos en la vista y luego usaremos en el endpoint para comparar
+//            model.addAttribute("respuestasUsuario",respuestasUsuario);
+//            logger.info("En el model se ha añadido un Map vacío llamado respuestasUsuario");
             return "quiz"; // Return the quiz.html template. for users to view and submit quiz answers right after logging in.
         }
 
