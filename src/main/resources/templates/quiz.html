@@ -23,6 +23,9 @@
                         <strong>Pregunta nº <span th:text="${pregunta.id}"></span>:</strong>
                         <span th:text="${pregunta.questionText}"></span>
                     </p>
+                    <p th:text="|A.- ${pregunta.options[0]}|">Respuesta A</p>
+                    <p th:text="|B.- ${pregunta.options[1]}|">Respuesta B</p>
+                    <p th:text="|C.- ${pregunta.options[2]}|">Respuesta C</p>
 
                     <!-- Importante el th:name para pasar al Map cada respuesta del usuario. th:field y bindeo con objetos no es la mejor opción tras testarlo
                     para visualizarlo: mandamos cada respuesta siendo el key el ID (definido con atributo "name" y con un prefijo) y el value (definido con el atributo HTML value).
@@ -31,7 +34,7 @@
                     Esto lo conseguimos con la concatenacion teniendoo todo entre comillas simples o usando literal substitutions con el pipe. La razón esque en Thymeleaf no puedes anidar expresiones ${} dentro de ${}
                     Así que lo más sencillo es mandar la info en pares que sean facilmente trabajables gracias al prefijo respuesta_ y listo (no usarlo puede ser algo confuso, especialmente con los value de las option siendo números)
                     -->
-
+                    <p>Elige tu respuesta para la pregunta <span th:text="${pregunta.id}"></span>:</p>
                     <select th:name="|respuesta_${pregunta.id}|">
                         <option value="0">A</option>
                         <option value="1">B</option>

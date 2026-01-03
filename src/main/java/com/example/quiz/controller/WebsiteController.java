@@ -316,11 +316,19 @@ public class WebsiteController {
         return "results";
     }
 
-
+    //Remember: to get all params a Map can be used as a method parameter (prolly requires some clean up)
     @PostMapping("/results")
     public String submitAnswers(
-            List<Question> respuestasUsuario,
+            @RequestParam Map<String,String> allRequestParams,
             Model model) {
+
+        //get all params and clean them (?)
+        logger.info("Se han detectado una serie de parámetros y almacenado en un Map. Estos son los contenidos: "+allRequestParams);
+        //get all questions for evaluation
+        List<Question> listaQuizzes=new ArrayList<>(questionsService.loadQuizzes());
+        model.addAttribute("listaQuizzes",listaQuizzes);
+        logger.info("En el model se ha añadido el atributo listaQuizzes en el endpoint POST de /results con los siguientes valores: "+listaQuizzes);
+
 
         return "results";
 
