@@ -309,7 +309,7 @@ public class WebsiteController {
 
     /*----------------------------------------------------TODO: ENDPOINTS DE RESULTADOS (USUARIOS)----------------------------------------------------*/
 
-
+//TODO: DETERMINAR SI ESTE ENDPOINT NOS SIRVE. HABRÍA QUE GUARDAR LAS RESPUESTAS DE ALGUNA FORMA (VARIABLE DE SESION MAYBE?)
     @GetMapping("/results")
     public String result() {
 

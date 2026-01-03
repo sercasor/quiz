@@ -4,61 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-    <title>Viewer Page</title>
+    <title>Página de resultados</title>
 </head>
 <body>
-<h1>Panel de usuario</h1>
-<p>Hola, <span th:text="${username}"></span>!, a continuación tienes tu cuestionario. Cada pregunta tiene UNA respuesta correcta y vale 1 punto. </p>
-<p>Para aprobar necesitarás acertar al menos la mitad de las preguntas. ¡Suerte!</p>
+<h1>Resultados del cuestionario</h1>
+<p>A continuación tienes los resultados del cuestionario.</p>
+<p>Recuerda, para aprobar necesitarás acertar al menos la mitad (50%) de las preguntas.</p>
 
-
-<!--Lista de preguntas-->
-<div id="quizList" th:object="${respuestasUsuario}">
-    <table>
-        <tr th:each="question : ${listaQuizzes}">
-            <td>Pregunta nº: <span th:text="${question.id}">Número</span></td>
-                <td th:text="${question.questionText}">Enunciado</td>
-                <td th:text="${question.questionText}">Respuesta A</td>
-                <td th:text="${question.questionText}">Respuesta B</td>
-                <td th:text="${question.questionText}">Respuesta C</td>
-        </tr>
-    </table>
-<!--    Elección de respuesta-->
-    <form th:action="">
-        <tr th:each="question : ${listaQuizzes}">
-            <td th:field="*{id}" th:text="Respuesta para la pregunta nº "><span th:text="${question.id}">Número</span></td>
-            <select th:field="*{inputCorrectAnswer}" name="inputCorrectAnswer" id="inputCorrectAnswer">
-                <option value="0">A</option>
-                <option value="1">B</option>
-                <option value="2">C</option>
-            </select>
-    </form>
-
-            <tr>
-<!--                TODO: COMPROBAR SI ES NECESARIO UN OBJETO QUESTION QUE HAGA DE RESPUESTA DEL USUARIO Y SE COMPARE CON LA PREGUNTA DE LA BD O SI SIMPLEMENTE CON THYMELEAF PODEMOS INDICAR QUE LA RESPUESTA ES CORRECTA O NO-->
-                <label for="inputCorrectAnswer">Elige la respuesta correcta:</label>
-                <select th:field="*{inputCorrectAnswer}" name="inputCorrectAnswer" id="inputCorrectAnswer">
-                    <option th:text="" th:field="*{inputOpcionesString[0]}" value="0"></option>
-                    <option value="0">A</option>
-                    <option value="1">B</option>
-                    <option value="2">C</option>
-                </select>
-            </tr>
-
-                <td>
-                    <form th:action="@{/admin/edit/{id}(id=${question.id})}" method="get">
-                        <button>Editar  pregunta</button>
-                    </form>
-                </td>
-                <td>
-                    <form th:action="@{/admin/delete/{id}(id=${question.id})}" method="get">
-                        <button>Borrar  pregunta</button>
-                    </form>
-                </td>
-        </tr>
-
-    </table>
-</div>
+<!--TODO: sustituir los valores con X o Y por etiquetas span con los valores correctos -->
+<p>X preguntas acertadas de Y preguntas totales. Tu nota es de un XXXXX%</p>
 
 
 <!--Navegacion básica-->
