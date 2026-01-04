@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.Set;
+import java.util.ArrayList;
 
 @Controller
 public class WebsiteController {
@@ -322,12 +324,49 @@ public class WebsiteController {
             @RequestParam Map<String,String> allRequestParams,
             Model model) {
 
-        //get all params and clean them (?)
-        logger.info("Se han detectado una serie de parámetros y almacenado en un Map. Estos son los contenidos: "+allRequestParams);
+        //general variables
+        final String prefijoParamRespuesta="respuesta_";
+        String mensajePuntuacionFinal;
+        double respuestasRespondidasCorrectamente=0.00;
+        double puntuacionFinal=0.00;
+        String conclusion;
+
         //get all questions for evaluation
-        List<Question> listaQuizzes=new ArrayList<>(questionsService.loadQuizzes());
+        Map<Integer, Question> listaQuizzes=questionsService.getQuestions();
         model.addAttribute("listaQuizzes",listaQuizzes);
         logger.info("En el model se ha añadido el atributo listaQuizzes en el endpoint POST de /results con los siguientes valores: "+listaQuizzes);
+
+
+
+        //get all params and clean them
+        Question preguntaRespondidaUsuario;
+        String[] arrayValueParam;
+        for (Map.Entry<String,String> i : allRequestParams.entrySet()){
+            //nos aseguramos de solo evaluar respuestas y no otros parámetros
+            if(i.getKey().contains(prefijoParamRespuesta)){
+                preguntaRespondidaUsuario=new Question();
+                preguntaRespondidaUsuario.setId(Integer.parseInt(i.getKey()));
+                //the prefix is getting trimmed here to use the actual answer
+                arrayValueParam= i.getValue().split(prefijoParamRespuesta);
+                preguntaRespondidaUsuario.setInputCorrectAnswer(arrayValueParam[1]);
+
+                Question preguntaCorrespondienteBD=listaQuizzes.get(preguntaRespondidaUsuario.getId());
+
+                String respuestaCorrecta=preguntaCorrespondienteBD.getCorrectAnswer();
+                if(respuestaCorrecta.equals(preguntaRespondidaUsuario.getInputCorrectAnswer())){
+                    respuestasRespondidasCorrectamente++;
+
+                }
+            }
+        }
+
+        //calculate the score
+        puntuacionFinal=respuestasRespondidasCorrectamente/listaQuizzes.size()*100;
+        conclusion=(puntuacionFinal>= listaQuizzes.size()/2.00)?" Felicidades!":" Has suspendido.";
+        mensajePuntuacionFinal=String.format("Tu puntuación es de un %.2f%%. %s",puntuacionFinal,conclusion);
+        model.addAttribute("mensajePuntuacionFinal",mensajePuntuacionFinal);
+        logger.info("Cálculo acabado, el resultado es: "+mensajePuntuacionFinal);
+
 
 
         return "results";
