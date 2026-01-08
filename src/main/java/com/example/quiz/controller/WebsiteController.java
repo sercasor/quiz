@@ -335,6 +335,7 @@ public class WebsiteController {
         Map<Integer, Question> listaQuizzes=questionsService.getQuestions();
         model.addAttribute("listaQuizzes",listaQuizzes);
         logger.info("En el model se ha añadido el atributo listaQuizzes en el endpoint POST de /results con los siguientes valores: "+listaQuizzes);
+        logger.info("En el endpoint POST de /results tenemos estos parámetros: "+allRequestParams);
 
 
 
@@ -345,14 +346,15 @@ public class WebsiteController {
             //nos aseguramos de solo evaluar respuestas y no otros parámetros
             if(i.getKey().contains(prefijoParamRespuesta)){
                 preguntaRespondidaUsuario=new Question();
-                preguntaRespondidaUsuario.setId(Integer.parseInt(i.getKey()));
-                //the prefix is getting trimmed here to use the actual answer
-                arrayValueParam= i.getValue().split(prefijoParamRespuesta);
-                preguntaRespondidaUsuario.setInputCorrectAnswer(arrayValueParam[1]);
-
+                arrayValueParam= i.getKey().split(prefijoParamRespuesta);
+                String strinPruebas="respuesta_1";
+                //iniciamos atributos relevantes según el input del usuario
+                preguntaRespondidaUsuario.setId(Integer.parseInt(arrayValueParam[1])); //recordemos que la key es respuesta_0 por ejemplo y queremos solo el número
+                preguntaRespondidaUsuario.setInputCorrectAnswer(i.getValue()); //se trata del valuedel parámetro. No necesitamos ArrayList ni nada, mejor algo ligero vs los Question compeltos del Map de la BD
+                logger.info("Info introducido por el usuario en la pregunta "+preguntaRespondidaUsuario.getId()+": "+preguntaRespondidaUsuario.toString());
+                //el objeto completo sacado de la BD para comparar
                 Question preguntaCorrespondienteBD=listaQuizzes.get(preguntaRespondidaUsuario.getId());
-
-                String respuestaCorrecta=preguntaCorrespondienteBD.getCorrectAnswer();
+                String respuestaCorrecta=preguntaCorrespondienteBD.getInputCorrectAnswer();
                 if(respuestaCorrecta.equals(preguntaRespondidaUsuario.getInputCorrectAnswer())){
                     respuestasRespondidasCorrectamente++;
 
