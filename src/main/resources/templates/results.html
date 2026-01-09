@@ -7,12 +7,27 @@
     <title>Página de resultados</title>
 </head>
 <body>
-<h1>Resultados del cuestionario</h1>
+<h1>Página de resultados</h1>
 <p>A continuación tienes los resultados del cuestionario.</p>
 <p>Recuerda, para aprobar necesitarás acertar al menos la mitad (50%) de las preguntas.</p>
 
-<!--TODO: sustituir los valores con X o Y por etiquetas span con los valores correctos -->
-<p>X preguntas acertadas de Y preguntas totales. Tu nota es de un XXXXX%</p>
+<h2>Resultados del cuestionario</h2>
+
+<div th:if="${listaQuizzes.isEmpty()}">
+    <p>Todavía no hay ningún cuestionario creado. Es necesario que un administrador cree al menos una pregunta</p>
+</div>
+
+
+<div th:unless="${mensajePuntuacionFinal.isEmpty()}">
+    <p th:text="${mensajePuntuacionFinal}">Mensaje de conclusión</p>
+</div>
+
+
+<div th:if="${mensajePuntuacionFinal.isEmpty()}">
+    <p>No has rellenado ningún formulario. Completa el formulario en tu perfil para obtener un resultado</p>
+</div>
+
+
 
 
 <!--Navegacion básica-->
